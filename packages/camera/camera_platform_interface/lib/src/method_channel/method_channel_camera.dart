@@ -88,6 +88,7 @@ class MethodChannelCamera extends CameraPlatform {
       final reply = await _channel
           .invokeMapMethod<String, dynamic>('create', <String, dynamic>{
         'cameraName': cameraDescription.name,
+        'sensorOrientation': cameraDescription.sensorOrientation,
         'resolutionPreset': resolutionPreset != null
             ? _serializeResolutionPreset(resolutionPreset)
             : null,

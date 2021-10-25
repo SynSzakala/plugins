@@ -372,6 +372,7 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
     String cameraName = call.argument("cameraName");
     String preset = call.argument("resolutionPreset");
     boolean enableAudio = call.argument("enableAudio");
+    int sensorOrientation = call.argument("sensorOrientation");
 
     TextureRegistry.SurfaceTextureEntry flutterSurfaceTexture =
         textureRegistry.createSurfaceTexture();
@@ -379,7 +380,7 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
         new DartMessenger(
             messenger, flutterSurfaceTexture.id(), new Handler(Looper.getMainLooper()));
     CameraProperties cameraProperties =
-        new CameraPropertiesImpl(cameraName, CameraUtils.getCameraManager(activity));
+        new CameraPropertiesImpl(cameraName, CameraUtils.getCameraManager(activity), sensorOrientation);
     ResolutionPreset resolutionPreset = ResolutionPreset.valueOf(preset);
 
     camera =

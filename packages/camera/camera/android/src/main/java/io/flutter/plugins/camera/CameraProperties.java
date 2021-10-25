@@ -14,7 +14,9 @@ import android.util.Rational;
 import android.util.Size;
 import androidx.annotation.RequiresApi;
 
-/** An interface allowing access to the different characteristics of the device's camera. */
+/**
+ * An interface allowing access to the different characteristics of the device's camera.
+ */
 public interface CameraProperties {
 
   /**
@@ -32,7 +34,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#CONTROL_AE_TARGET_FPS_RANGE key.
    *
    * @return android.util.Range<Integer>[] List of frame rate ranges supported by this camera
-   *     device.
+   * device.
    */
   Range<Integer>[] getControlAutoExposureAvailableTargetFpsRanges();
 
@@ -45,7 +47,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#CONTROL_AE_COMPENSATION_RANGE key.
    *
    * @return android.util.Range<Integer> Maximum and minimum exposure compensation supported by this
-   *     camera device.
+   * camera device.
    */
   Range<Integer> getControlAutoExposureCompensationRange();
 
@@ -77,7 +79,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#CONTROL_MAX_REGIONS_AE key.
    *
    * @return Integer Maximum number of metering regions that can be used by the auto-exposure
-   *     routine.
+   * routine.
    */
   Integer getControlMaxRegionsAutoExposure();
 
@@ -138,7 +140,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#LENS_INFO_MINIMUM_FOCUS_DISTANCE key.
    *
    * @return Float Shortest distance from front most surface of the lens that can be brought into
-   *     sharp focus.
+   * sharp focus.
    */
   Float getLensInfoMinimumFocusDistance();
 
@@ -150,7 +152,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#SCALER_AVAILABLE_MAX_DIGITAL_ZOOM key.
    *
    * @return Float Maximum ratio between both active area width and crop region width, and active
-   *     area height and crop region height
+   * area height and crop region height
    */
   Float getScalerAvailableMaxDigitalZoom();
 
@@ -162,7 +164,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#SENSOR_INFO_ACTIVE_ARRAY_SIZE key.
    *
    * @return android.graphics.Rect area of the image sensor which corresponds to active pixels after
-   *     any geometric distortion correction has been applied.
+   * any geometric distortion correction has been applied.
    */
   Rect getSensorInfoActiveArraySize();
 
@@ -173,7 +175,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#SENSOR_INFO_PIXEL_ARRAY_SIZE key.
    *
    * @return android.util.Size Dimensions of the full pixel array, possibly including black
-   *     calibration pixels.
+   * calibration pixels.
    */
   Size getSensorInfoPixelArraySize();
 
@@ -186,7 +188,7 @@ public interface CameraProperties {
    * key.
    *
    * @return android.graphics.Rect Area of the image sensor which corresponds to active pixels prior
-   *     to the application of any geometric distortion correction.
+   * to the application of any geometric distortion correction.
    */
   @RequiresApi(api = VERSION_CODES.M)
   Rect getSensorInfoPreCorrectionActiveArraySize();
@@ -199,7 +201,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#SENSOR_ORIENTATION key.
    *
    * @return int Clockwise angle through which the output image needs to be rotated to be upright on
-   *     the device screen in its native orientation.
+   * the device screen in its native orientation.
    */
   int getSensorOrientation();
 
@@ -220,7 +222,7 @@ public interface CameraProperties {
    * android.hardware.camera2.CameraCharacteristics#INFO_SUPPORTED_HARDWARE_LEVEL key.
    *
    * @return int Level which generally classifies the overall set of the camera device
-   *     functionality.
+   * functionality.
    */
   int getHardwareLevel();
 
@@ -244,11 +246,16 @@ public interface CameraProperties {
 class CameraPropertiesImpl implements CameraProperties {
   private final CameraCharacteristics cameraCharacteristics;
   private final String cameraName;
+  private final int sensorOrientation;
 
-  public CameraPropertiesImpl(String cameraName, CameraManager cameraManager)
-      throws CameraAccessException {
+  public CameraPropertiesImpl(
+      String cameraName,
+      CameraManager cameraManager,
+      Integer sensorOrientation
+  ) throws CameraAccessException {
     this.cameraName = cameraName;
     this.cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraName);
+    this.sensorOrientation = sensorOrientation;
   }
 
   @Override
@@ -334,7 +341,7 @@ class CameraPropertiesImpl implements CameraProperties {
 
   @Override
   public int getSensorOrientation() {
-    return cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+    return sensorOrientation;
   }
 
   @Override
